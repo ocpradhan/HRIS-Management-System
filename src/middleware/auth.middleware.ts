@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Role } from "../../prisma/generated/client/index.js";
-import { error } from "console";
 
 // Retrieve the token validation signature secret string
 const JWT_SECRET = process.env.JWT_SECRET || "super_secret_hris_key_fallback";
