@@ -37,4 +37,36 @@ model Employee {
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 1. Department Relationship
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  // 2. Job Title Relationship
+  jobTitleId String?
+  jobTitle   JobTitle? @relation(fields: [jobTitleId], references: [id], onDelete: SetNull)
+
+  // 3. Self-Referential Hierarchy (Manager <-> Reports)
+  managerId String?
+  manager   Employee?  @relation("ManagerReports", fields: [managerId], references: [id], onDelete: SetNull)
+  reports   Employee[] @relation("ManagerReports")
+}
+
+model Department {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  employees   Employee[] // One-to-many: a department has many employees
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model JobTitle {
+  id          String     @id @default(uuid())
+  title       String     @unique
+  salaryGrade String?
+  employees   Employee[] // One-to-many: a job title belongs to many employees
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

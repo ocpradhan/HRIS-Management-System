@@ -2,6 +2,7 @@ import express from "express";
 import { db } from "./config/db.js"; // Remember the modern .js rule
 import authRoutes from "./modules/auth/auth.routes.js"; // Mount our new module cleanly
 import employeeRoutes from "./modules/employee/employee.routes.js";
+import departmentRoutes from "./modules/department/department.routes.js";
 
 const app = express();
 app.use(express.json());
@@ -9,6 +10,7 @@ app.use(express.json());
 // Bind the router system to an explicit api context space
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
+app.use("/api/departments", departmentRoutes);
 
 app.get("/health", async (req, res) => {
   try {

@@ -134,7 +134,27 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  departmentId: 'departmentId',
+  jobTitleId: 'jobTitleId',
+  managerId: 'managerId'
+};
+
+exports.Prisma.DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JobTitleScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  salaryGrade: 'salaryGrade',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -146,6 +166,11 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.Role = exports.$Enums.Role = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   HR_ADMIN: 'HR_ADMIN',
@@ -155,7 +180,9 @@ exports.Role = exports.$Enums.Role = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Employee: 'Employee'
+  Employee: 'Employee',
+  Department: 'Department',
+  JobTitle: 'JobTitle'
 };
 
 /**
