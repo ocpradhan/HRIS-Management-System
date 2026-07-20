@@ -4,6 +4,7 @@ import authRoutes from "./modules/auth/auth.routes.js"; // Mount our new module 
 import employeeRoutes from "./modules/employee/employee.routes.js";
 import departmentRoutes from "./modules/department/department.routes.js";
 import jobtitleRoutes from "./modules/jobtitle/jobtitle.routes.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,9 @@ app.get("/health", async (req, res) => {
     res.status(500).json({ status: "database error", details: String(error) });
   }
 });
+
+// Mount the global error middleware at the VERY END
+app.use(errorHandler);
 
 const PORT = 5000;
 app.listen(PORT, () => {
