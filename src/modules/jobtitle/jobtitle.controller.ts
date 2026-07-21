@@ -1,22 +1,18 @@
 import type { Request, Response } from "express";
 import { db } from "../../config/db.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { AppError } from "../../utils/appError.js";
 
 /**
  * Provisions a brand new corporate job title / position role.
  * Restricted to administrative tiers.
  */
-export const createJobTitle = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
+export const createJobTitle = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const { title, salaryGrade } = req.body;
 
     if (!title || typeof title !== "string" || title.trim() === "") {
-      res
-        .status(400)
-        .json({ error: "Job title is mandatory string property." });
-      return;
+      throw new AppError("Job title is mandatory string property.", 400);
     }
 
     // Check for duplicate titles to prevent database constraint duplication failures
@@ -24,10 +20,10 @@ export const createJobTitle = async (
       where: { title: title.trim() },
     });
     if (existingTitle) {
-      res
-        .status(409)
-        .json({ error: "A job title with this designation already exists." });
-      return;
+      throw new AppError(
+        "A job title with this designation already exists.",
+        409,
+      );
     }
 
     const newJobTitle = await db.jobTitle.create({
@@ -41,23 +37,15 @@ export const createJobTitle = async (
       message: "Job title registered successfully",
       jobtitle: newJobTitle,
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Failed to create a job title layout.",
-      details: String(error),
-    });
-  }
-};
+  },
+);
 
 /**
  * Retrieves all registered job titles alongside an active count of assigned personnel.
  * Accessible by all authenticated accounts.
  */
-export const getAllJobTitles = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
+export const getAllJobTitles = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const jobTitles = await db.jobTitle.findMany({
       include: {
         _count: {
@@ -70,27 +58,21 @@ export const getAllJobTitles = async (
     });
 
     res.status(200).json(jobTitles);
-  } catch (error) {
-    res.status(500).json({ error: "", details: String(error) });
-  }
-};
+  },
+);
 
 /**
  * Updates an existing job title's attributes
  * Restricted to administrative tiers
  */
-export const updateJobTitle = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
+export const updateJobTitle = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const { title, salaryGrade } = req.body;
 
     const targetExists = await db.jobTitle.findUnique({ where: { id } });
     if (!targetExists) {
-      res.status(404).json({ error: "Target job title record not found" });
-      return;
+      throw new AppError("Target job title record not found", 404);
     }
 
     const updateData: { title?: string; salaryGrade?: string | null } = {};
@@ -99,10 +81,10 @@ export const updateJobTitle = async (
         where: { title: title.trim(), NOT: { id } },
       });
       if (duplicateTitle) {
-        res
-          .status(409)
-          .json({ error: "Another position already uses this job title." });
-        return;
+        throw new AppError(
+          "Another position already uses this job title.",
+          409,
+        );
       }
       updateData.title = title.trim();
     }
@@ -119,28 +101,20 @@ export const updateJobTitle = async (
       message: "Job title updated successfully.",
       jobTitle: updatedJobTitle,
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Failed to modify job title records.",
-      details: String(error),
-    });
-  }
-};
+  },
+);
 
 /**
  * Completely purges a job title options from the HRIS engine.
  * Affected employee profiles will automatically have their jobTitleId safely set to null.
  */
-export const deleteJobTitle = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
+export const deleteJobTitle = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     const targetExists = await db.jobTitle.findUnique({ where: { id } });
     if (!targetExists) {
-      res.status(404).json({ error: "Target job title record not found." });
+      throw new AppError("Target job title record not found.", 404);
     }
 
     await db.jobTitle.delete({ where: { id } });
@@ -148,10 +122,5 @@ export const deleteJobTitle = async (
       message:
         "Job title successfully purged. Associated employee fields unlinked.",
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Failed to purge job title structure.",
-      details: String(error),
-    });
-  }
-};
+  },
+);

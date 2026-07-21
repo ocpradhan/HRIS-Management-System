@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "../../config/db.js"; // Notice the required modern local .js extension
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { AppError } from "../../utils/appError.js";
 
 // A standard rule for cryptography processing speed
 const SALT_ROUNDS = 10;
@@ -12,25 +14,22 @@ const JWT_SECRET = process.env.JWT_SECRET || "super_secret_hris_key_fallback";
  * Handles the logic for setting up a brand new corportate User profile
  * and an attached Employee profile inside a single atomic database transaction.
  */
-export const register = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const register = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const { email, password, firstName, lastName, role } = req.body;
 
     // 1. Core input guard check
     if (!email || !password || !firstName || !lastName) {
-      res
-        .status(400)
-        .json({ error: "Missing required account configuration values." });
-      return;
+      throw new AppError("Missing required account configuration values.", 400);
     }
 
     // 2. Look for existing users to avoid database level constraint duplication crashes
     const existingUser = await db.user.findUnique({ where: { email } });
     if (existingUser) {
-      res
-        .status(409)
-        .json({ error: "An account with this email address already exists." });
-      return;
+      throw new AppError(
+        "An account with this email address already exists.",
+        409,
+      );
     }
 
     // 3. Cryptographically scramble the plaintext password using modern hashing
@@ -64,34 +63,24 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       message: "User and Employee profiles provisioned successfully.",
       user: newUser,
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Server initialization error during registration,",
-      details: String(error),
-    });
-  }
-};
+  },
+);
 
 /**
  * Handles comparing incoming plaintext credentials against the cryptographically secure record hash and returns a signed JSON Web Token access token payload.
  */
-export const login = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const login = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res
-        .status(400)
-        .json({ error: "Email and password are mandatory properties." });
-      return;
+      throw new AppError("Email and password are mandatory properties.", 400);
     }
 
     // 1. Locate the existing user profile by its unique field definition
     const user = await db.user.findUnique({ where: { email } });
     if (!user) {
-      res
-        .status(401)
-        .json({ error: "Invalid authentication credentials provided." });
+      throw new AppError("Invalid authentication credentials provided.", 401);
     }
 
     // 2. Validate incoming password string against database stored secure hash
@@ -100,9 +89,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       user?.password ?? "",
     );
     if (!isPasswordValid) {
-      res
-        .status(401)
-        .json({ error: "Invalid authentication credentials provided." });
+      throw new AppError("Invalid authentication credentials provided.", 401);
       return;
     }
 
@@ -125,10 +112,5 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         role: user?.role,
       },
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Internal failure processing login parameters.",
-      details: String(error),
-    });
-  }
-};
+  },
+);
