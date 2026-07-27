@@ -9,23 +9,77 @@ import { AppError } from "../../utils/appError.js";
  */
 export const getAllEmployees = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const employees = await db.employee.findMany({
-      include: {
-        user: {
-          select: {
-            email: true,
-            role: true,
-            createdAt: true,
-          },
-        },
-      },
-      orderBy: {
-        lastName: "asc",
-      },
-    });
+    // Line 1: Extract query parameters with fallbacks for pagination
+    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1);
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(req.query.limit as string, 10) || 10),
+    );
+    const skip = (page - 1) * limit;
 
+    // Line 2: Extract filter and search parameters
+    const { search, departmentId, jobTitleId, role } = req.query;
+
+    // Line 3: Construct dynamic Prisma filtering object (where clause)
+    const whereClause: any = {};
+
+    // Line 4: Search filter (Case-insensitive match on firstName, lastName, or connected user email)
+    if (typeof search === "string" && search.trim() !== "") {
+      const searchTerm = search.trim();
+      whereClause.OR = [
+        { firstName: { contains: searchTerm, mode: "insensitive" } },
+        { lastName: { contains: searchTerm, mode: "insensitive" } },
+        { user: { email: { contains: searchTerm, mode: "insensitive" } } },
+      ];
+    }
+
+    // Line 5: Specific relation filters
+    if (typeof departmentId === "string" && departmentId.trim() !== "") {
+      whereClause.departmentId = departmentId.trim();
+    }
+
+    if (typeof jobTitleId === "string" && jobTitleId.trim() !== "") {
+      whereClause.jobTitleId = jobTitleId.trim();
+    }
+
+    if (typeof role === "string" && role.trim() !== "") {
+      whereClause.user = {
+        ...(whereClause.user || {}),
+        role: role.trim().toUpperCase(),
+      };
+    }
+
+    // Line 6: Execute parallel queries using db.$transaction for total count and paginated rows
+    const [totalItems, employees] = await db.$transaction([
+      db.employee.count({ where: whereClause }),
+      db.employee.findMany({
+        where: whereClause,
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: { select: { email: true, role: true } },
+          department: { select: { id: true, name: true } },
+          jobTitle: { select: { id: true, title: true } },
+          manager: { select: { id: true, firstName: true, lastName: true } },
+        },
+      }),
+    ]);
+
+    // Line 7: Calculate pagination metadata
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // Line 8: Return formatted response
     res.status(200).json({
-      count: employees.length,
+      message: "Employees retrieved successfully",
+      meta: {
+        totalItems,
+        totalPages,
+        currentPage: page,
+        itemsPerPage: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
       employees,
     });
   },
