@@ -31,13 +31,11 @@ model User {
 }
 
 model Employee {
-  id        String   @id @default(uuid())
+  id        String @id @default(uuid())
   firstName String
   lastName  String
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // 1. Department Relationship
   departmentId String?
@@ -51,6 +49,14 @@ model Employee {
   managerId String?
   manager   Employee?  @relation("ManagerReports", fields: [managerId], references: [id], onDelete: SetNull)
   reports   Employee[] @relation("ManagerReports")
+
+  leaveRequests         LeaveRequest[] @relation("EmployeeLeaveRequests")
+  reviewedLeaveRequests LeaveRequest[] @relation("LeaveReviewer")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("employees")
 }
 
 model Department {
@@ -69,4 +75,44 @@ model JobTitle {
   employees   Employee[] // One-to-many: a job title belongs to many employees
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+enum LeaveType {
+  VACATION
+  SICK
+  PERSONAL
+  MATERNITY
+  PATERNITY
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model LeaveRequest {
+  id         String   @id @default(uuid())
+  employeeId String
+  // Relation name "EmployeeLeaveRequests"
+  employee   Employee @relation("EmployeeLeaveRequests", fields: [employeeId], references: [id], onDelete: Cascade)
+
+  leaveType LeaveType
+  startDate DateTime
+  endDate   DateTime
+  reason    String?
+  status    LeaveStatus @default(PENDING)
+
+  // Who reviewed this request (Manager or HR)
+  reviewedById String?
+  // Named relation matching "LeaveReviewer" in Employee Model
+  reviewedBy   Employee? @relation("LeaveReviewer", fields: [reviewedById], references: [id])
+  reviewNote   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leave_requests")
 }

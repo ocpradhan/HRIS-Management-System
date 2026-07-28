@@ -4,6 +4,7 @@ import authRoutes from "./modules/auth/auth.routes.js"; // Mount our new module 
 import employeeRoutes from "./modules/employee/employee.routes.js";
 import departmentRoutes from "./modules/department/department.routes.js";
 import jobtitleRoutes from "./modules/jobtitle/jobtitle.routes.js";
+import leaveRoutes from "./modules/leave/leave.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/job-titles", jobtitleRoutes);
+app.use("/api/leave", leaveRoutes);
 
 app.get("/health", async (req, res) => {
   try {

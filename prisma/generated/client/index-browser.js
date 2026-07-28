@@ -134,11 +134,11 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   userId: 'userId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   departmentId: 'departmentId',
   jobTitleId: 'jobTitleId',
-  managerId: 'managerId'
+  managerId: 'managerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.DepartmentScalarFieldEnum = {
@@ -153,6 +153,20 @@ exports.Prisma.JobTitleScalarFieldEnum = {
   id: 'id',
   title: 'title',
   salaryGrade: 'salaryGrade',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LeaveRequestScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  leaveType: 'leaveType',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  reason: 'reason',
+  status: 'status',
+  reviewedById: 'reviewedById',
+  reviewNote: 'reviewNote',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -178,11 +192,28 @@ exports.Role = exports.$Enums.Role = {
   EMPLOYEE: 'EMPLOYEE'
 };
 
+exports.LeaveType = exports.$Enums.LeaveType = {
+  VACATION: 'VACATION',
+  SICK: 'SICK',
+  PERSONAL: 'PERSONAL',
+  MATERNITY: 'MATERNITY',
+  PATERNITY: 'PATERNITY',
+  UNPAID: 'UNPAID'
+};
+
+exports.LeaveStatus = exports.$Enums.LeaveStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Employee: 'Employee',
   Department: 'Department',
-  JobTitle: 'JobTitle'
+  JobTitle: 'JobTitle',
+  LeaveRequest: 'LeaveRequest'
 };
 
 /**
