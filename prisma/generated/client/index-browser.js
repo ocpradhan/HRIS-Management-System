@@ -171,6 +171,19 @@ exports.Prisma.LeaveRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AttendanceScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  date: 'date',
+  clockIn: 'clockIn',
+  clockOut: 'clockOut',
+  workHours: 'workHours',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -208,12 +221,20 @@ exports.LeaveStatus = exports.$Enums.LeaveStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
+  PRESENT: 'PRESENT',
+  LATE: 'LATE',
+  HALF_DAY: 'HALF_DAY',
+  ABSENT: 'ABSENT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Employee: 'Employee',
   Department: 'Department',
   JobTitle: 'JobTitle',
-  LeaveRequest: 'LeaveRequest'
+  LeaveRequest: 'LeaveRequest',
+  Attendance: 'Attendance'
 };
 
 /**
