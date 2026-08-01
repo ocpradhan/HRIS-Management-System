@@ -7,6 +7,7 @@ import jobtitleRoutes from "./modules/jobtitle/jobtitle.routes.js";
 import leaveRoutes from "./modules/leave/leave.routes.js";
 import attendanceRoutes from "./modules/attendance/attendance.routes.js";
 import performanceReviewRoutes from "./modules/performanceReview/performanceReview.routes.js";
+import dashboardRoutes from "./modules/dashboard/dashboard.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/job-titles", jobtitleRoutes);
 app.use("/api/leave", leaveRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/performance", performanceReviewRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/health", async (req, res) => {
   try {

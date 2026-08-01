@@ -4,7 +4,7 @@ import {
   clockOut,
   getAttendanceLogs,
 } from "./attendance.controller.js";
-import { checkAuth, requireRoles } from "../../middleware/auth.middleware.js";
+import { checkAuth } from "../../middleware/auth.middleware.js";
 
 const router = Router();
 
