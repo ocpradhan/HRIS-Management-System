@@ -43,6 +43,11 @@ export type LeaveRequest = $Result.DefaultSelection<Prisma.$LeaveRequestPayload>
  * 
  */
 export type Attendance = $Result.DefaultSelection<Prisma.$AttendancePayload>
+/**
+ * Model PerformanceReview
+ * 
+ */
+export type PerformanceReview = $Result.DefaultSelection<Prisma.$PerformanceReviewPayload>
 
 /**
  * Enums
@@ -89,6 +94,18 @@ export const AttendanceStatus: {
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
 
+
+export const ReviewPeriod: {
+  Q1: 'Q1',
+  Q2: 'Q2',
+  Q3: 'Q3',
+  Q4: 'Q4',
+  ANNUAL: 'ANNUAL',
+  PROBATION: 'PROBATION'
+};
+
+export type ReviewPeriod = (typeof ReviewPeriod)[keyof typeof ReviewPeriod]
+
 }
 
 export type Role = $Enums.Role
@@ -106,6 +123,10 @@ export const LeaveStatus: typeof $Enums.LeaveStatus
 export type AttendanceStatus = $Enums.AttendanceStatus
 
 export const AttendanceStatus: typeof $Enums.AttendanceStatus
+
+export type ReviewPeriod = $Enums.ReviewPeriod
+
+export const ReviewPeriod: typeof $Enums.ReviewPeriod
 
 /**
  * ##  Prisma Client ʲˢ
@@ -287,6 +308,16 @@ export class PrismaClient<
     * ```
     */
   get attendance(): Prisma.AttendanceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.performanceReview`: Exposes CRUD operations for the **PerformanceReview** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PerformanceReviews
+    * const performanceReviews = await prisma.performanceReview.findMany()
+    * ```
+    */
+  get performanceReview(): Prisma.PerformanceReviewDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -726,7 +757,8 @@ export namespace Prisma {
     Department: 'Department',
     JobTitle: 'JobTitle',
     LeaveRequest: 'LeaveRequest',
-    Attendance: 'Attendance'
+    Attendance: 'Attendance',
+    PerformanceReview: 'PerformanceReview'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -742,7 +774,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "employee" | "department" | "jobTitle" | "leaveRequest" | "attendance"
+      modelProps: "user" | "employee" | "department" | "jobTitle" | "leaveRequest" | "attendance" | "performanceReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1190,6 +1222,80 @@ export namespace Prisma {
           }
         }
       }
+      PerformanceReview: {
+        payload: Prisma.$PerformanceReviewPayload<ExtArgs>
+        fields: Prisma.PerformanceReviewFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PerformanceReviewFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PerformanceReviewFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          findFirst: {
+            args: Prisma.PerformanceReviewFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PerformanceReviewFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          findMany: {
+            args: Prisma.PerformanceReviewFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>[]
+          }
+          create: {
+            args: Prisma.PerformanceReviewCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          createMany: {
+            args: Prisma.PerformanceReviewCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PerformanceReviewCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>[]
+          }
+          delete: {
+            args: Prisma.PerformanceReviewDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          update: {
+            args: Prisma.PerformanceReviewUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          deleteMany: {
+            args: Prisma.PerformanceReviewDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PerformanceReviewUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PerformanceReviewUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>[]
+          }
+          upsert: {
+            args: Prisma.PerformanceReviewUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceReviewPayload>
+          }
+          aggregate: {
+            args: Prisma.PerformanceReviewAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePerformanceReview>
+          }
+          groupBy: {
+            args: Prisma.PerformanceReviewGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceReviewGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PerformanceReviewCountArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceReviewCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1304,6 +1410,7 @@ export namespace Prisma {
     jobTitle?: JobTitleOmit
     leaveRequest?: LeaveRequestOmit
     attendance?: AttendanceOmit
+    performanceReview?: PerformanceReviewOmit
   }
 
   /* Types for Logging */
@@ -1388,6 +1495,8 @@ export namespace Prisma {
     leaveRequests: number
     reviewedLeaveRequests: number
     attendanceRecords: number
+    performanceReviews: number
+    givenReviews: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1395,6 +1504,8 @@ export namespace Prisma {
     leaveRequests?: boolean | EmployeeCountOutputTypeCountLeaveRequestsArgs
     reviewedLeaveRequests?: boolean | EmployeeCountOutputTypeCountReviewedLeaveRequestsArgs
     attendanceRecords?: boolean | EmployeeCountOutputTypeCountAttendanceRecordsArgs
+    performanceReviews?: boolean | EmployeeCountOutputTypeCountPerformanceReviewsArgs
+    givenReviews?: boolean | EmployeeCountOutputTypeCountGivenReviewsArgs
   }
 
   // Custom InputTypes
@@ -1434,6 +1545,20 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountAttendanceRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AttendanceWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountPerformanceReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceReviewWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountGivenReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceReviewWhereInput
   }
 
 
@@ -2788,6 +2913,8 @@ export namespace Prisma {
     leaveRequests?: boolean | Employee$leaveRequestsArgs<ExtArgs>
     reviewedLeaveRequests?: boolean | Employee$reviewedLeaveRequestsArgs<ExtArgs>
     attendanceRecords?: boolean | Employee$attendanceRecordsArgs<ExtArgs>
+    performanceReviews?: boolean | Employee$performanceReviewsArgs<ExtArgs>
+    givenReviews?: boolean | Employee$givenReviewsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -2845,6 +2972,8 @@ export namespace Prisma {
     leaveRequests?: boolean | Employee$leaveRequestsArgs<ExtArgs>
     reviewedLeaveRequests?: boolean | Employee$reviewedLeaveRequestsArgs<ExtArgs>
     attendanceRecords?: boolean | Employee$attendanceRecordsArgs<ExtArgs>
+    performanceReviews?: boolean | Employee$performanceReviewsArgs<ExtArgs>
+    givenReviews?: boolean | Employee$givenReviewsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2871,6 +3000,8 @@ export namespace Prisma {
       leaveRequests: Prisma.$LeaveRequestPayload<ExtArgs>[]
       reviewedLeaveRequests: Prisma.$LeaveRequestPayload<ExtArgs>[]
       attendanceRecords: Prisma.$AttendancePayload<ExtArgs>[]
+      performanceReviews: Prisma.$PerformanceReviewPayload<ExtArgs>[]
+      givenReviews: Prisma.$PerformanceReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3284,6 +3415,8 @@ export namespace Prisma {
     leaveRequests<T extends Employee$leaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$leaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewedLeaveRequests<T extends Employee$reviewedLeaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$reviewedLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attendanceRecords<T extends Employee$attendanceRecordsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$attendanceRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    performanceReviews<T extends Employee$performanceReviewsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$performanceReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    givenReviews<T extends Employee$givenReviewsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$givenReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3873,6 +4006,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.performanceReviews
+   */
+  export type Employee$performanceReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    where?: PerformanceReviewWhereInput
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    cursor?: PerformanceReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PerformanceReviewScalarFieldEnum | PerformanceReviewScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.givenReviews
+   */
+  export type Employee$givenReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    where?: PerformanceReviewWhereInput
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    cursor?: PerformanceReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PerformanceReviewScalarFieldEnum | PerformanceReviewScalarFieldEnum[]
   }
 
   /**
@@ -8375,6 +8556,1193 @@ export namespace Prisma {
 
 
   /**
+   * Model PerformanceReview
+   */
+
+  export type AggregatePerformanceReview = {
+    _count: PerformanceReviewCountAggregateOutputType | null
+    _avg: PerformanceReviewAvgAggregateOutputType | null
+    _sum: PerformanceReviewSumAggregateOutputType | null
+    _min: PerformanceReviewMinAggregateOutputType | null
+    _max: PerformanceReviewMaxAggregateOutputType | null
+  }
+
+  export type PerformanceReviewAvgAggregateOutputType = {
+    year: number | null
+    rating: number | null
+  }
+
+  export type PerformanceReviewSumAggregateOutputType = {
+    year: number | null
+    rating: number | null
+  }
+
+  export type PerformanceReviewMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    reviewerId: string | null
+    period: $Enums.ReviewPeriod | null
+    year: number | null
+    rating: number | null
+    strengths: string | null
+    improvements: string | null
+    comments: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PerformanceReviewMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    reviewerId: string | null
+    period: $Enums.ReviewPeriod | null
+    year: number | null
+    rating: number | null
+    strengths: string | null
+    improvements: string | null
+    comments: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PerformanceReviewCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    reviewerId: number
+    period: number
+    year: number
+    rating: number
+    strengths: number
+    improvements: number
+    comments: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PerformanceReviewAvgAggregateInputType = {
+    year?: true
+    rating?: true
+  }
+
+  export type PerformanceReviewSumAggregateInputType = {
+    year?: true
+    rating?: true
+  }
+
+  export type PerformanceReviewMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    reviewerId?: true
+    period?: true
+    year?: true
+    rating?: true
+    strengths?: true
+    improvements?: true
+    comments?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PerformanceReviewMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    reviewerId?: true
+    period?: true
+    year?: true
+    rating?: true
+    strengths?: true
+    improvements?: true
+    comments?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PerformanceReviewCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    reviewerId?: true
+    period?: true
+    year?: true
+    rating?: true
+    strengths?: true
+    improvements?: true
+    comments?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PerformanceReviewAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceReview to aggregate.
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceReviews to fetch.
+     */
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PerformanceReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PerformanceReviews
+    **/
+    _count?: true | PerformanceReviewCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PerformanceReviewAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PerformanceReviewSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PerformanceReviewMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PerformanceReviewMaxAggregateInputType
+  }
+
+  export type GetPerformanceReviewAggregateType<T extends PerformanceReviewAggregateArgs> = {
+        [P in keyof T & keyof AggregatePerformanceReview]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePerformanceReview[P]>
+      : GetScalarType<T[P], AggregatePerformanceReview[P]>
+  }
+
+
+
+
+  export type PerformanceReviewGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceReviewWhereInput
+    orderBy?: PerformanceReviewOrderByWithAggregationInput | PerformanceReviewOrderByWithAggregationInput[]
+    by: PerformanceReviewScalarFieldEnum[] | PerformanceReviewScalarFieldEnum
+    having?: PerformanceReviewScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PerformanceReviewCountAggregateInputType | true
+    _avg?: PerformanceReviewAvgAggregateInputType
+    _sum?: PerformanceReviewSumAggregateInputType
+    _min?: PerformanceReviewMinAggregateInputType
+    _max?: PerformanceReviewMaxAggregateInputType
+  }
+
+  export type PerformanceReviewGroupByOutputType = {
+    id: string
+    employeeId: string
+    reviewerId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths: string | null
+    improvements: string | null
+    comments: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PerformanceReviewCountAggregateOutputType | null
+    _avg: PerformanceReviewAvgAggregateOutputType | null
+    _sum: PerformanceReviewSumAggregateOutputType | null
+    _min: PerformanceReviewMinAggregateOutputType | null
+    _max: PerformanceReviewMaxAggregateOutputType | null
+  }
+
+  type GetPerformanceReviewGroupByPayload<T extends PerformanceReviewGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PerformanceReviewGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PerformanceReviewGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PerformanceReviewGroupByOutputType[P]>
+            : GetScalarType<T[P], PerformanceReviewGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PerformanceReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    reviewerId?: boolean
+    period?: boolean
+    year?: boolean
+    rating?: boolean
+    strengths?: boolean
+    improvements?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceReview"]>
+
+  export type PerformanceReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    reviewerId?: boolean
+    period?: boolean
+    year?: boolean
+    rating?: boolean
+    strengths?: boolean
+    improvements?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceReview"]>
+
+  export type PerformanceReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    reviewerId?: boolean
+    period?: boolean
+    year?: boolean
+    rating?: boolean
+    strengths?: boolean
+    improvements?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceReview"]>
+
+  export type PerformanceReviewSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    reviewerId?: boolean
+    period?: boolean
+    year?: boolean
+    rating?: boolean
+    strengths?: boolean
+    improvements?: boolean
+    comments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PerformanceReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "reviewerId" | "period" | "year" | "rating" | "strengths" | "improvements" | "comments" | "createdAt" | "updatedAt", ExtArgs["result"]["performanceReview"]>
+  export type PerformanceReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+  export type PerformanceReviewIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+  export type PerformanceReviewIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    reviewer?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $PerformanceReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PerformanceReview"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+      reviewer: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      reviewerId: string
+      period: $Enums.ReviewPeriod
+      year: number
+      rating: number
+      strengths: string | null
+      improvements: string | null
+      comments: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["performanceReview"]>
+    composites: {}
+  }
+
+  type PerformanceReviewGetPayload<S extends boolean | null | undefined | PerformanceReviewDefaultArgs> = $Result.GetResult<Prisma.$PerformanceReviewPayload, S>
+
+  type PerformanceReviewCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PerformanceReviewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PerformanceReviewCountAggregateInputType | true
+    }
+
+  export interface PerformanceReviewDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PerformanceReview'], meta: { name: 'PerformanceReview' } }
+    /**
+     * Find zero or one PerformanceReview that matches the filter.
+     * @param {PerformanceReviewFindUniqueArgs} args - Arguments to find a PerformanceReview
+     * @example
+     * // Get one PerformanceReview
+     * const performanceReview = await prisma.performanceReview.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PerformanceReviewFindUniqueArgs>(args: SelectSubset<T, PerformanceReviewFindUniqueArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PerformanceReview that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PerformanceReviewFindUniqueOrThrowArgs} args - Arguments to find a PerformanceReview
+     * @example
+     * // Get one PerformanceReview
+     * const performanceReview = await prisma.performanceReview.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PerformanceReviewFindUniqueOrThrowArgs>(args: SelectSubset<T, PerformanceReviewFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceReview that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewFindFirstArgs} args - Arguments to find a PerformanceReview
+     * @example
+     * // Get one PerformanceReview
+     * const performanceReview = await prisma.performanceReview.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PerformanceReviewFindFirstArgs>(args?: SelectSubset<T, PerformanceReviewFindFirstArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceReview that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewFindFirstOrThrowArgs} args - Arguments to find a PerformanceReview
+     * @example
+     * // Get one PerformanceReview
+     * const performanceReview = await prisma.performanceReview.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PerformanceReviewFindFirstOrThrowArgs>(args?: SelectSubset<T, PerformanceReviewFindFirstOrThrowArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PerformanceReviews that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PerformanceReviews
+     * const performanceReviews = await prisma.performanceReview.findMany()
+     * 
+     * // Get first 10 PerformanceReviews
+     * const performanceReviews = await prisma.performanceReview.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const performanceReviewWithIdOnly = await prisma.performanceReview.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PerformanceReviewFindManyArgs>(args?: SelectSubset<T, PerformanceReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PerformanceReview.
+     * @param {PerformanceReviewCreateArgs} args - Arguments to create a PerformanceReview.
+     * @example
+     * // Create one PerformanceReview
+     * const PerformanceReview = await prisma.performanceReview.create({
+     *   data: {
+     *     // ... data to create a PerformanceReview
+     *   }
+     * })
+     * 
+     */
+    create<T extends PerformanceReviewCreateArgs>(args: SelectSubset<T, PerformanceReviewCreateArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PerformanceReviews.
+     * @param {PerformanceReviewCreateManyArgs} args - Arguments to create many PerformanceReviews.
+     * @example
+     * // Create many PerformanceReviews
+     * const performanceReview = await prisma.performanceReview.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PerformanceReviewCreateManyArgs>(args?: SelectSubset<T, PerformanceReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PerformanceReviews and returns the data saved in the database.
+     * @param {PerformanceReviewCreateManyAndReturnArgs} args - Arguments to create many PerformanceReviews.
+     * @example
+     * // Create many PerformanceReviews
+     * const performanceReview = await prisma.performanceReview.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PerformanceReviews and only return the `id`
+     * const performanceReviewWithIdOnly = await prisma.performanceReview.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PerformanceReviewCreateManyAndReturnArgs>(args?: SelectSubset<T, PerformanceReviewCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PerformanceReview.
+     * @param {PerformanceReviewDeleteArgs} args - Arguments to delete one PerformanceReview.
+     * @example
+     * // Delete one PerformanceReview
+     * const PerformanceReview = await prisma.performanceReview.delete({
+     *   where: {
+     *     // ... filter to delete one PerformanceReview
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PerformanceReviewDeleteArgs>(args: SelectSubset<T, PerformanceReviewDeleteArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PerformanceReview.
+     * @param {PerformanceReviewUpdateArgs} args - Arguments to update one PerformanceReview.
+     * @example
+     * // Update one PerformanceReview
+     * const performanceReview = await prisma.performanceReview.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PerformanceReviewUpdateArgs>(args: SelectSubset<T, PerformanceReviewUpdateArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PerformanceReviews.
+     * @param {PerformanceReviewDeleteManyArgs} args - Arguments to filter PerformanceReviews to delete.
+     * @example
+     * // Delete a few PerformanceReviews
+     * const { count } = await prisma.performanceReview.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PerformanceReviewDeleteManyArgs>(args?: SelectSubset<T, PerformanceReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceReviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PerformanceReviews
+     * const performanceReview = await prisma.performanceReview.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PerformanceReviewUpdateManyArgs>(args: SelectSubset<T, PerformanceReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceReviews and returns the data updated in the database.
+     * @param {PerformanceReviewUpdateManyAndReturnArgs} args - Arguments to update many PerformanceReviews.
+     * @example
+     * // Update many PerformanceReviews
+     * const performanceReview = await prisma.performanceReview.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PerformanceReviews and only return the `id`
+     * const performanceReviewWithIdOnly = await prisma.performanceReview.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PerformanceReviewUpdateManyAndReturnArgs>(args: SelectSubset<T, PerformanceReviewUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PerformanceReview.
+     * @param {PerformanceReviewUpsertArgs} args - Arguments to update or create a PerformanceReview.
+     * @example
+     * // Update or create a PerformanceReview
+     * const performanceReview = await prisma.performanceReview.upsert({
+     *   create: {
+     *     // ... data to create a PerformanceReview
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PerformanceReview we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PerformanceReviewUpsertArgs>(args: SelectSubset<T, PerformanceReviewUpsertArgs<ExtArgs>>): Prisma__PerformanceReviewClient<$Result.GetResult<Prisma.$PerformanceReviewPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PerformanceReviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewCountArgs} args - Arguments to filter PerformanceReviews to count.
+     * @example
+     * // Count the number of PerformanceReviews
+     * const count = await prisma.performanceReview.count({
+     *   where: {
+     *     // ... the filter for the PerformanceReviews we want to count
+     *   }
+     * })
+    **/
+    count<T extends PerformanceReviewCountArgs>(
+      args?: Subset<T, PerformanceReviewCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PerformanceReviewCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PerformanceReview.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PerformanceReviewAggregateArgs>(args: Subset<T, PerformanceReviewAggregateArgs>): Prisma.PrismaPromise<GetPerformanceReviewAggregateType<T>>
+
+    /**
+     * Group by PerformanceReview.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceReviewGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PerformanceReviewGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PerformanceReviewGroupByArgs['orderBy'] }
+        : { orderBy?: PerformanceReviewGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PerformanceReviewGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPerformanceReviewGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PerformanceReview model
+   */
+  readonly fields: PerformanceReviewFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PerformanceReview.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PerformanceReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reviewer<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PerformanceReview model
+   */
+  interface PerformanceReviewFieldRefs {
+    readonly id: FieldRef<"PerformanceReview", 'String'>
+    readonly employeeId: FieldRef<"PerformanceReview", 'String'>
+    readonly reviewerId: FieldRef<"PerformanceReview", 'String'>
+    readonly period: FieldRef<"PerformanceReview", 'ReviewPeriod'>
+    readonly year: FieldRef<"PerformanceReview", 'Int'>
+    readonly rating: FieldRef<"PerformanceReview", 'Int'>
+    readonly strengths: FieldRef<"PerformanceReview", 'String'>
+    readonly improvements: FieldRef<"PerformanceReview", 'String'>
+    readonly comments: FieldRef<"PerformanceReview", 'String'>
+    readonly createdAt: FieldRef<"PerformanceReview", 'DateTime'>
+    readonly updatedAt: FieldRef<"PerformanceReview", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PerformanceReview findUnique
+   */
+  export type PerformanceReviewFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceReview to fetch.
+     */
+    where: PerformanceReviewWhereUniqueInput
+  }
+
+  /**
+   * PerformanceReview findUniqueOrThrow
+   */
+  export type PerformanceReviewFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceReview to fetch.
+     */
+    where: PerformanceReviewWhereUniqueInput
+  }
+
+  /**
+   * PerformanceReview findFirst
+   */
+  export type PerformanceReviewFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceReview to fetch.
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceReviews to fetch.
+     */
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceReviews.
+     */
+    cursor?: PerformanceReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceReviews.
+     */
+    distinct?: PerformanceReviewScalarFieldEnum | PerformanceReviewScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceReview findFirstOrThrow
+   */
+  export type PerformanceReviewFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceReview to fetch.
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceReviews to fetch.
+     */
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceReviews.
+     */
+    cursor?: PerformanceReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceReviews.
+     */
+    distinct?: PerformanceReviewScalarFieldEnum | PerformanceReviewScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceReview findMany
+   */
+  export type PerformanceReviewFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceReviews to fetch.
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceReviews to fetch.
+     */
+    orderBy?: PerformanceReviewOrderByWithRelationInput | PerformanceReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PerformanceReviews.
+     */
+    cursor?: PerformanceReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceReviews.
+     */
+    distinct?: PerformanceReviewScalarFieldEnum | PerformanceReviewScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceReview create
+   */
+  export type PerformanceReviewCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PerformanceReview.
+     */
+    data: XOR<PerformanceReviewCreateInput, PerformanceReviewUncheckedCreateInput>
+  }
+
+  /**
+   * PerformanceReview createMany
+   */
+  export type PerformanceReviewCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PerformanceReviews.
+     */
+    data: PerformanceReviewCreateManyInput | PerformanceReviewCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PerformanceReview createManyAndReturn
+   */
+  export type PerformanceReviewCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * The data used to create many PerformanceReviews.
+     */
+    data: PerformanceReviewCreateManyInput | PerformanceReviewCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceReview update
+   */
+  export type PerformanceReviewUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PerformanceReview.
+     */
+    data: XOR<PerformanceReviewUpdateInput, PerformanceReviewUncheckedUpdateInput>
+    /**
+     * Choose, which PerformanceReview to update.
+     */
+    where: PerformanceReviewWhereUniqueInput
+  }
+
+  /**
+   * PerformanceReview updateMany
+   */
+  export type PerformanceReviewUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PerformanceReviews.
+     */
+    data: XOR<PerformanceReviewUpdateManyMutationInput, PerformanceReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceReviews to update
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * Limit how many PerformanceReviews to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceReview updateManyAndReturn
+   */
+  export type PerformanceReviewUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * The data used to update PerformanceReviews.
+     */
+    data: XOR<PerformanceReviewUpdateManyMutationInput, PerformanceReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceReviews to update
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * Limit how many PerformanceReviews to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceReview upsert
+   */
+  export type PerformanceReviewUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PerformanceReview to update in case it exists.
+     */
+    where: PerformanceReviewWhereUniqueInput
+    /**
+     * In case the PerformanceReview found by the `where` argument doesn't exist, create a new PerformanceReview with this data.
+     */
+    create: XOR<PerformanceReviewCreateInput, PerformanceReviewUncheckedCreateInput>
+    /**
+     * In case the PerformanceReview was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PerformanceReviewUpdateInput, PerformanceReviewUncheckedUpdateInput>
+  }
+
+  /**
+   * PerformanceReview delete
+   */
+  export type PerformanceReviewDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+    /**
+     * Filter which PerformanceReview to delete.
+     */
+    where: PerformanceReviewWhereUniqueInput
+  }
+
+  /**
+   * PerformanceReview deleteMany
+   */
+  export type PerformanceReviewDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceReviews to delete
+     */
+    where?: PerformanceReviewWhereInput
+    /**
+     * Limit how many PerformanceReviews to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceReview without action
+   */
+  export type PerformanceReviewDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceReview
+     */
+    select?: PerformanceReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceReview
+     */
+    omit?: PerformanceReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceReviewInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8468,6 +9836,23 @@ export namespace Prisma {
   };
 
   export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
+  export const PerformanceReviewScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    reviewerId: 'reviewerId',
+    period: 'period',
+    year: 'year',
+    rating: 'rating',
+    strengths: 'strengths',
+    improvements: 'improvements',
+    comments: 'comments',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PerformanceReviewScalarFieldEnum = (typeof PerformanceReviewScalarFieldEnum)[keyof typeof PerformanceReviewScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8598,6 +9983,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ReviewPeriod'
+   */
+  export type EnumReviewPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewPeriod'>
+    
+
+
+  /**
+   * Reference to a field of type 'ReviewPeriod[]'
+   */
+  export type ListEnumReviewPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewPeriod[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -8695,6 +10094,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestListRelationFilter
     reviewedLeaveRequests?: LeaveRequestListRelationFilter
     attendanceRecords?: AttendanceListRelationFilter
+    performanceReviews?: PerformanceReviewListRelationFilter
+    givenReviews?: PerformanceReviewListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -8715,6 +10116,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestOrderByRelationAggregateInput
     reviewedLeaveRequests?: LeaveRequestOrderByRelationAggregateInput
     attendanceRecords?: AttendanceOrderByRelationAggregateInput
+    performanceReviews?: PerformanceReviewOrderByRelationAggregateInput
+    givenReviews?: PerformanceReviewOrderByRelationAggregateInput
   }
 
   export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -8738,6 +10141,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestListRelationFilter
     reviewedLeaveRequests?: LeaveRequestListRelationFilter
     attendanceRecords?: AttendanceListRelationFilter
+    performanceReviews?: PerformanceReviewListRelationFilter
+    givenReviews?: PerformanceReviewListRelationFilter
   }, "id" | "userId">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -9051,6 +10456,97 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
   }
 
+  export type PerformanceReviewWhereInput = {
+    AND?: PerformanceReviewWhereInput | PerformanceReviewWhereInput[]
+    OR?: PerformanceReviewWhereInput[]
+    NOT?: PerformanceReviewWhereInput | PerformanceReviewWhereInput[]
+    id?: StringFilter<"PerformanceReview"> | string
+    employeeId?: StringFilter<"PerformanceReview"> | string
+    reviewerId?: StringFilter<"PerformanceReview"> | string
+    period?: EnumReviewPeriodFilter<"PerformanceReview"> | $Enums.ReviewPeriod
+    year?: IntFilter<"PerformanceReview"> | number
+    rating?: IntFilter<"PerformanceReview"> | number
+    strengths?: StringNullableFilter<"PerformanceReview"> | string | null
+    improvements?: StringNullableFilter<"PerformanceReview"> | string | null
+    comments?: StringFilter<"PerformanceReview"> | string
+    createdAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+    updatedAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    reviewer?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type PerformanceReviewOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    reviewerId?: SortOrder
+    period?: SortOrder
+    year?: SortOrder
+    rating?: SortOrder
+    strengths?: SortOrderInput | SortOrder
+    improvements?: SortOrderInput | SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    reviewer?: EmployeeOrderByWithRelationInput
+  }
+
+  export type PerformanceReviewWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    employeeId_period_year?: PerformanceReviewEmployeeIdPeriodYearCompoundUniqueInput
+    AND?: PerformanceReviewWhereInput | PerformanceReviewWhereInput[]
+    OR?: PerformanceReviewWhereInput[]
+    NOT?: PerformanceReviewWhereInput | PerformanceReviewWhereInput[]
+    employeeId?: StringFilter<"PerformanceReview"> | string
+    reviewerId?: StringFilter<"PerformanceReview"> | string
+    period?: EnumReviewPeriodFilter<"PerformanceReview"> | $Enums.ReviewPeriod
+    year?: IntFilter<"PerformanceReview"> | number
+    rating?: IntFilter<"PerformanceReview"> | number
+    strengths?: StringNullableFilter<"PerformanceReview"> | string | null
+    improvements?: StringNullableFilter<"PerformanceReview"> | string | null
+    comments?: StringFilter<"PerformanceReview"> | string
+    createdAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+    updatedAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    reviewer?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id" | "employeeId_period_year">
+
+  export type PerformanceReviewOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    reviewerId?: SortOrder
+    period?: SortOrder
+    year?: SortOrder
+    rating?: SortOrder
+    strengths?: SortOrderInput | SortOrder
+    improvements?: SortOrderInput | SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PerformanceReviewCountOrderByAggregateInput
+    _avg?: PerformanceReviewAvgOrderByAggregateInput
+    _max?: PerformanceReviewMaxOrderByAggregateInput
+    _min?: PerformanceReviewMinOrderByAggregateInput
+    _sum?: PerformanceReviewSumOrderByAggregateInput
+  }
+
+  export type PerformanceReviewScalarWhereWithAggregatesInput = {
+    AND?: PerformanceReviewScalarWhereWithAggregatesInput | PerformanceReviewScalarWhereWithAggregatesInput[]
+    OR?: PerformanceReviewScalarWhereWithAggregatesInput[]
+    NOT?: PerformanceReviewScalarWhereWithAggregatesInput | PerformanceReviewScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PerformanceReview"> | string
+    employeeId?: StringWithAggregatesFilter<"PerformanceReview"> | string
+    reviewerId?: StringWithAggregatesFilter<"PerformanceReview"> | string
+    period?: EnumReviewPeriodWithAggregatesFilter<"PerformanceReview"> | $Enums.ReviewPeriod
+    year?: IntWithAggregatesFilter<"PerformanceReview"> | number
+    rating?: IntWithAggregatesFilter<"PerformanceReview"> | number
+    strengths?: StringNullableWithAggregatesFilter<"PerformanceReview"> | string | null
+    improvements?: StringNullableWithAggregatesFilter<"PerformanceReview"> | string | null
+    comments?: StringWithAggregatesFilter<"PerformanceReview"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PerformanceReview"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PerformanceReview"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -9132,6 +10628,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -9148,6 +10646,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUpdateInput = {
@@ -9164,6 +10664,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -9180,6 +10682,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -9520,6 +11024,102 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PerformanceReviewCreateInput = {
+    id?: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutPerformanceReviewsInput
+    reviewer: EmployeeCreateNestedOneWithoutGivenReviewsInput
+  }
+
+  export type PerformanceReviewUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    reviewerId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceReviewUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutPerformanceReviewsNestedInput
+    reviewer?: EmployeeUpdateOneRequiredWithoutGivenReviewsNestedInput
+  }
+
+  export type PerformanceReviewUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    reviewerId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceReviewCreateManyInput = {
+    id?: string
+    employeeId: string
+    reviewerId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceReviewUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceReviewUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    reviewerId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -9675,6 +11275,12 @@ export namespace Prisma {
     none?: AttendanceWhereInput
   }
 
+  export type PerformanceReviewListRelationFilter = {
+    every?: PerformanceReviewWhereInput
+    some?: PerformanceReviewWhereInput
+    none?: PerformanceReviewWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -9689,6 +11295,10 @@ export namespace Prisma {
   }
 
   export type AttendanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PerformanceReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9996,6 +11606,108 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
+  export type EnumReviewPeriodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReviewPeriod | EnumReviewPeriodFieldRefInput<$PrismaModel>
+    in?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    not?: NestedEnumReviewPeriodFilter<$PrismaModel> | $Enums.ReviewPeriod
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type PerformanceReviewEmployeeIdPeriodYearCompoundUniqueInput = {
+    employeeId: string
+    period: $Enums.ReviewPeriod
+    year: number
+  }
+
+  export type PerformanceReviewCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    reviewerId?: SortOrder
+    period?: SortOrder
+    year?: SortOrder
+    rating?: SortOrder
+    strengths?: SortOrder
+    improvements?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceReviewAvgOrderByAggregateInput = {
+    year?: SortOrder
+    rating?: SortOrder
+  }
+
+  export type PerformanceReviewMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    reviewerId?: SortOrder
+    period?: SortOrder
+    year?: SortOrder
+    rating?: SortOrder
+    strengths?: SortOrder
+    improvements?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceReviewMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    reviewerId?: SortOrder
+    period?: SortOrder
+    year?: SortOrder
+    rating?: SortOrder
+    strengths?: SortOrder
+    improvements?: SortOrder
+    comments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceReviewSumOrderByAggregateInput = {
+    year?: SortOrder
+    rating?: SortOrder
+  }
+
+  export type EnumReviewPeriodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReviewPeriod | EnumReviewPeriodFieldRefInput<$PrismaModel>
+    in?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    not?: NestedEnumReviewPeriodWithAggregatesFilter<$PrismaModel> | $Enums.ReviewPeriod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReviewPeriodFilter<$PrismaModel>
+    _max?: NestedEnumReviewPeriodFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type EmployeeCreateNestedOneWithoutUserInput = {
     create?: XOR<EmployeeCreateWithoutUserInput, EmployeeUncheckedCreateWithoutUserInput>
     connectOrCreate?: EmployeeCreateOrConnectWithoutUserInput
@@ -10092,6 +11804,20 @@ export namespace Prisma {
     connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
   }
 
+  export type PerformanceReviewCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput> | PerformanceReviewCreateWithoutEmployeeInput[] | PerformanceReviewUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutEmployeeInput | PerformanceReviewCreateOrConnectWithoutEmployeeInput[]
+    createMany?: PerformanceReviewCreateManyEmployeeInputEnvelope
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+  }
+
+  export type PerformanceReviewCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput> | PerformanceReviewCreateWithoutReviewerInput[] | PerformanceReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutReviewerInput | PerformanceReviewCreateOrConnectWithoutReviewerInput[]
+    createMany?: PerformanceReviewCreateManyReviewerInputEnvelope
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+  }
+
   export type EmployeeUncheckedCreateNestedManyWithoutManagerInput = {
     create?: XOR<EmployeeCreateWithoutManagerInput, EmployeeUncheckedCreateWithoutManagerInput> | EmployeeCreateWithoutManagerInput[] | EmployeeUncheckedCreateWithoutManagerInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutManagerInput | EmployeeCreateOrConnectWithoutManagerInput[]
@@ -10118,6 +11844,20 @@ export namespace Prisma {
     connectOrCreate?: AttendanceCreateOrConnectWithoutEmployeeInput | AttendanceCreateOrConnectWithoutEmployeeInput[]
     createMany?: AttendanceCreateManyEmployeeInputEnvelope
     connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
+  export type PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput> | PerformanceReviewCreateWithoutEmployeeInput[] | PerformanceReviewUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutEmployeeInput | PerformanceReviewCreateOrConnectWithoutEmployeeInput[]
+    createMany?: PerformanceReviewCreateManyEmployeeInputEnvelope
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+  }
+
+  export type PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput> | PerformanceReviewCreateWithoutReviewerInput[] | PerformanceReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutReviewerInput | PerformanceReviewCreateOrConnectWithoutReviewerInput[]
+    createMany?: PerformanceReviewCreateManyReviewerInputEnvelope
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutEmployeeNestedInput = {
@@ -10214,6 +11954,34 @@ export namespace Prisma {
     deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
   }
 
+  export type PerformanceReviewUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput> | PerformanceReviewCreateWithoutEmployeeInput[] | PerformanceReviewUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutEmployeeInput | PerformanceReviewCreateOrConnectWithoutEmployeeInput[]
+    upsert?: PerformanceReviewUpsertWithWhereUniqueWithoutEmployeeInput | PerformanceReviewUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: PerformanceReviewCreateManyEmployeeInputEnvelope
+    set?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    disconnect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    delete?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    update?: PerformanceReviewUpdateWithWhereUniqueWithoutEmployeeInput | PerformanceReviewUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: PerformanceReviewUpdateManyWithWhereWithoutEmployeeInput | PerformanceReviewUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
+  }
+
+  export type PerformanceReviewUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput> | PerformanceReviewCreateWithoutReviewerInput[] | PerformanceReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutReviewerInput | PerformanceReviewCreateOrConnectWithoutReviewerInput[]
+    upsert?: PerformanceReviewUpsertWithWhereUniqueWithoutReviewerInput | PerformanceReviewUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: PerformanceReviewCreateManyReviewerInputEnvelope
+    set?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    disconnect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    delete?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    update?: PerformanceReviewUpdateWithWhereUniqueWithoutReviewerInput | PerformanceReviewUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: PerformanceReviewUpdateManyWithWhereWithoutReviewerInput | PerformanceReviewUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -10272,6 +12040,34 @@ export namespace Prisma {
     update?: AttendanceUpdateWithWhereUniqueWithoutEmployeeInput | AttendanceUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: AttendanceUpdateManyWithWhereWithoutEmployeeInput | AttendanceUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  }
+
+  export type PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput> | PerformanceReviewCreateWithoutEmployeeInput[] | PerformanceReviewUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutEmployeeInput | PerformanceReviewCreateOrConnectWithoutEmployeeInput[]
+    upsert?: PerformanceReviewUpsertWithWhereUniqueWithoutEmployeeInput | PerformanceReviewUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: PerformanceReviewCreateManyEmployeeInputEnvelope
+    set?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    disconnect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    delete?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    update?: PerformanceReviewUpdateWithWhereUniqueWithoutEmployeeInput | PerformanceReviewUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: PerformanceReviewUpdateManyWithWhereWithoutEmployeeInput | PerformanceReviewUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
+  }
+
+  export type PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput> | PerformanceReviewCreateWithoutReviewerInput[] | PerformanceReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: PerformanceReviewCreateOrConnectWithoutReviewerInput | PerformanceReviewCreateOrConnectWithoutReviewerInput[]
+    upsert?: PerformanceReviewUpsertWithWhereUniqueWithoutReviewerInput | PerformanceReviewUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: PerformanceReviewCreateManyReviewerInputEnvelope
+    set?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    disconnect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    delete?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    connect?: PerformanceReviewWhereUniqueInput | PerformanceReviewWhereUniqueInput[]
+    update?: PerformanceReviewUpdateWithWhereUniqueWithoutReviewerInput | PerformanceReviewUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: PerformanceReviewUpdateManyWithWhereWithoutReviewerInput | PerformanceReviewUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedManyWithoutDepartmentInput = {
@@ -10424,6 +12220,46 @@ export namespace Prisma {
     upsert?: EmployeeUpsertWithoutAttendanceRecordsInput
     connect?: EmployeeWhereUniqueInput
     update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutAttendanceRecordsInput, EmployeeUpdateWithoutAttendanceRecordsInput>, EmployeeUncheckedUpdateWithoutAttendanceRecordsInput>
+  }
+
+  export type EmployeeCreateNestedOneWithoutPerformanceReviewsInput = {
+    create?: XOR<EmployeeCreateWithoutPerformanceReviewsInput, EmployeeUncheckedCreateWithoutPerformanceReviewsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPerformanceReviewsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EmployeeCreateNestedOneWithoutGivenReviewsInput = {
+    create?: XOR<EmployeeCreateWithoutGivenReviewsInput, EmployeeUncheckedCreateWithoutGivenReviewsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutGivenReviewsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EnumReviewPeriodFieldUpdateOperationsInput = {
+    set?: $Enums.ReviewPeriod
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutPerformanceReviewsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutPerformanceReviewsInput, EmployeeUncheckedCreateWithoutPerformanceReviewsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPerformanceReviewsInput
+    upsert?: EmployeeUpsertWithoutPerformanceReviewsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutPerformanceReviewsInput, EmployeeUpdateWithoutPerformanceReviewsInput>, EmployeeUncheckedUpdateWithoutPerformanceReviewsInput>
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutGivenReviewsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutGivenReviewsInput, EmployeeUncheckedCreateWithoutGivenReviewsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutGivenReviewsInput
+    upsert?: EmployeeUpsertWithoutGivenReviewsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutGivenReviewsInput, EmployeeUpdateWithoutGivenReviewsInput>, EmployeeUncheckedUpdateWithoutGivenReviewsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -10655,6 +12491,50 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumReviewPeriodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReviewPeriod | EnumReviewPeriodFieldRefInput<$PrismaModel>
+    in?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    not?: NestedEnumReviewPeriodFilter<$PrismaModel> | $Enums.ReviewPeriod
+  }
+
+  export type NestedEnumReviewPeriodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ReviewPeriod | EnumReviewPeriodFieldRefInput<$PrismaModel>
+    in?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ReviewPeriod[] | ListEnumReviewPeriodFieldRefInput<$PrismaModel>
+    not?: NestedEnumReviewPeriodWithAggregatesFilter<$PrismaModel> | $Enums.ReviewPeriod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumReviewPeriodFilter<$PrismaModel>
+    _max?: NestedEnumReviewPeriodFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type EmployeeCreateWithoutUserInput = {
     id?: string
     firstName: string
@@ -10668,6 +12548,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutUserInput = {
@@ -10683,6 +12565,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutUserInput = {
@@ -10714,6 +12598,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUserInput = {
@@ -10729,6 +12615,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserCreateWithoutEmployeeInput = {
@@ -10809,6 +12697,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutReportsInput = {
@@ -10824,6 +12714,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutReportsInput = {
@@ -10844,6 +12736,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutManagerInput = {
@@ -10859,6 +12753,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutManagerInput = {
@@ -10977,6 +12873,78 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PerformanceReviewCreateWithoutEmployeeInput = {
+    id?: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviewer: EmployeeCreateNestedOneWithoutGivenReviewsInput
+  }
+
+  export type PerformanceReviewUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    reviewerId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceReviewCreateOrConnectWithoutEmployeeInput = {
+    where: PerformanceReviewWhereUniqueInput
+    create: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type PerformanceReviewCreateManyEmployeeInputEnvelope = {
+    data: PerformanceReviewCreateManyEmployeeInput | PerformanceReviewCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PerformanceReviewCreateWithoutReviewerInput = {
+    id?: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutPerformanceReviewsInput
+  }
+
+  export type PerformanceReviewUncheckedCreateWithoutReviewerInput = {
+    id?: string
+    employeeId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceReviewCreateOrConnectWithoutReviewerInput = {
+    where: PerformanceReviewWhereUniqueInput
+    create: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type PerformanceReviewCreateManyReviewerInputEnvelope = {
+    data: PerformanceReviewCreateManyReviewerInput | PerformanceReviewCreateManyReviewerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutEmployeeInput = {
     update: XOR<UserUpdateWithoutEmployeeInput, UserUncheckedUpdateWithoutEmployeeInput>
     create: XOR<UserCreateWithoutEmployeeInput, UserUncheckedCreateWithoutEmployeeInput>
@@ -11084,6 +13052,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutReportsInput = {
@@ -11099,6 +13069,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUpsertWithWhereUniqueWithoutManagerInput = {
@@ -11213,6 +13185,55 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Attendance"> | Date | string
   }
 
+  export type PerformanceReviewUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: PerformanceReviewWhereUniqueInput
+    update: XOR<PerformanceReviewUpdateWithoutEmployeeInput, PerformanceReviewUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<PerformanceReviewCreateWithoutEmployeeInput, PerformanceReviewUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type PerformanceReviewUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: PerformanceReviewWhereUniqueInput
+    data: XOR<PerformanceReviewUpdateWithoutEmployeeInput, PerformanceReviewUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type PerformanceReviewUpdateManyWithWhereWithoutEmployeeInput = {
+    where: PerformanceReviewScalarWhereInput
+    data: XOR<PerformanceReviewUpdateManyMutationInput, PerformanceReviewUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type PerformanceReviewScalarWhereInput = {
+    AND?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
+    OR?: PerformanceReviewScalarWhereInput[]
+    NOT?: PerformanceReviewScalarWhereInput | PerformanceReviewScalarWhereInput[]
+    id?: StringFilter<"PerformanceReview"> | string
+    employeeId?: StringFilter<"PerformanceReview"> | string
+    reviewerId?: StringFilter<"PerformanceReview"> | string
+    period?: EnumReviewPeriodFilter<"PerformanceReview"> | $Enums.ReviewPeriod
+    year?: IntFilter<"PerformanceReview"> | number
+    rating?: IntFilter<"PerformanceReview"> | number
+    strengths?: StringNullableFilter<"PerformanceReview"> | string | null
+    improvements?: StringNullableFilter<"PerformanceReview"> | string | null
+    comments?: StringFilter<"PerformanceReview"> | string
+    createdAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+    updatedAt?: DateTimeFilter<"PerformanceReview"> | Date | string
+  }
+
+  export type PerformanceReviewUpsertWithWhereUniqueWithoutReviewerInput = {
+    where: PerformanceReviewWhereUniqueInput
+    update: XOR<PerformanceReviewUpdateWithoutReviewerInput, PerformanceReviewUncheckedUpdateWithoutReviewerInput>
+    create: XOR<PerformanceReviewCreateWithoutReviewerInput, PerformanceReviewUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type PerformanceReviewUpdateWithWhereUniqueWithoutReviewerInput = {
+    where: PerformanceReviewWhereUniqueInput
+    data: XOR<PerformanceReviewUpdateWithoutReviewerInput, PerformanceReviewUncheckedUpdateWithoutReviewerInput>
+  }
+
+  export type PerformanceReviewUpdateManyWithWhereWithoutReviewerInput = {
+    where: PerformanceReviewScalarWhereInput
+    data: XOR<PerformanceReviewUpdateManyMutationInput, PerformanceReviewUncheckedUpdateManyWithoutReviewerInput>
+  }
+
   export type EmployeeCreateWithoutDepartmentInput = {
     id?: string
     firstName: string
@@ -11226,6 +13247,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -11241,6 +13264,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -11282,6 +13307,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutJobTitleInput = {
@@ -11297,6 +13324,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutJobTitleInput = {
@@ -11338,6 +13367,8 @@ export namespace Prisma {
     reports?: EmployeeCreateNestedManyWithoutManagerInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutLeaveRequestsInput = {
@@ -11353,6 +13384,8 @@ export namespace Prisma {
     reports?: EmployeeUncheckedCreateNestedManyWithoutManagerInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutLeaveRequestsInput = {
@@ -11373,6 +13406,8 @@ export namespace Prisma {
     reports?: EmployeeCreateNestedManyWithoutManagerInput
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutReviewedLeaveRequestsInput = {
@@ -11388,6 +13423,8 @@ export namespace Prisma {
     reports?: EmployeeUncheckedCreateNestedManyWithoutManagerInput
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutReviewedLeaveRequestsInput = {
@@ -11419,6 +13456,8 @@ export namespace Prisma {
     reports?: EmployeeUpdateManyWithoutManagerNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutLeaveRequestsInput = {
@@ -11434,6 +13473,8 @@ export namespace Prisma {
     reports?: EmployeeUncheckedUpdateManyWithoutManagerNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUpsertWithoutReviewedLeaveRequestsInput = {
@@ -11460,6 +13501,8 @@ export namespace Prisma {
     reports?: EmployeeUpdateManyWithoutManagerNestedInput
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutReviewedLeaveRequestsInput = {
@@ -11475,6 +13518,8 @@ export namespace Prisma {
     reports?: EmployeeUncheckedUpdateManyWithoutManagerNestedInput
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeCreateWithoutAttendanceRecordsInput = {
@@ -11490,6 +13535,8 @@ export namespace Prisma {
     reports?: EmployeeCreateNestedManyWithoutManagerInput
     leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -11505,6 +13552,8 @@ export namespace Prisma {
     reports?: EmployeeUncheckedCreateNestedManyWithoutManagerInput
     leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
     reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type EmployeeCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -11536,6 +13585,8 @@ export namespace Prisma {
     reports?: EmployeeUpdateManyWithoutManagerNestedInput
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -11551,6 +13602,176 @@ export namespace Prisma {
     reports?: EmployeeUncheckedUpdateManyWithoutManagerNestedInput
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  }
+
+  export type EmployeeCreateWithoutPerformanceReviewsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEmployeeInput
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobTitle?: JobTitleCreateNestedOneWithoutEmployeesInput
+    manager?: EmployeeCreateNestedOneWithoutReportsInput
+    reports?: EmployeeCreateNestedManyWithoutManagerInput
+    leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
+    reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
+    attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewCreateNestedManyWithoutReviewerInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutPerformanceReviewsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    userId: string
+    departmentId?: string | null
+    jobTitleId?: string | null
+    managerId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reports?: EmployeeUncheckedCreateNestedManyWithoutManagerInput
+    leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
+    reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
+    attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    givenReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutReviewerInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutPerformanceReviewsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutPerformanceReviewsInput, EmployeeUncheckedCreateWithoutPerformanceReviewsInput>
+  }
+
+  export type EmployeeCreateWithoutGivenReviewsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEmployeeInput
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobTitle?: JobTitleCreateNestedOneWithoutEmployeesInput
+    manager?: EmployeeCreateNestedOneWithoutReportsInput
+    reports?: EmployeeCreateNestedManyWithoutManagerInput
+    leaveRequests?: LeaveRequestCreateNestedManyWithoutEmployeeInput
+    reviewedLeaveRequests?: LeaveRequestCreateNestedManyWithoutReviewedByInput
+    attendanceRecords?: AttendanceCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutGivenReviewsInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    userId: string
+    departmentId?: string | null
+    jobTitleId?: string | null
+    managerId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reports?: EmployeeUncheckedCreateNestedManyWithoutManagerInput
+    leaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutEmployeeInput
+    reviewedLeaveRequests?: LeaveRequestUncheckedCreateNestedManyWithoutReviewedByInput
+    attendanceRecords?: AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+    performanceReviews?: PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutGivenReviewsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutGivenReviewsInput, EmployeeUncheckedCreateWithoutGivenReviewsInput>
+  }
+
+  export type EmployeeUpsertWithoutPerformanceReviewsInput = {
+    update: XOR<EmployeeUpdateWithoutPerformanceReviewsInput, EmployeeUncheckedUpdateWithoutPerformanceReviewsInput>
+    create: XOR<EmployeeCreateWithoutPerformanceReviewsInput, EmployeeUncheckedCreateWithoutPerformanceReviewsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutPerformanceReviewsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutPerformanceReviewsInput, EmployeeUncheckedUpdateWithoutPerformanceReviewsInput>
+  }
+
+  export type EmployeeUpdateWithoutPerformanceReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEmployeeNestedInput
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobTitle?: JobTitleUpdateOneWithoutEmployeesNestedInput
+    manager?: EmployeeUpdateOneWithoutReportsNestedInput
+    reports?: EmployeeUpdateManyWithoutManagerNestedInput
+    leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
+    reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
+    attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutPerformanceReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitleId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reports?: EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+    leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+    reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+    attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  }
+
+  export type EmployeeUpsertWithoutGivenReviewsInput = {
+    update: XOR<EmployeeUpdateWithoutGivenReviewsInput, EmployeeUncheckedUpdateWithoutGivenReviewsInput>
+    create: XOR<EmployeeCreateWithoutGivenReviewsInput, EmployeeUncheckedCreateWithoutGivenReviewsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutGivenReviewsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutGivenReviewsInput, EmployeeUncheckedUpdateWithoutGivenReviewsInput>
+  }
+
+  export type EmployeeUpdateWithoutGivenReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEmployeeNestedInput
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobTitle?: JobTitleUpdateOneWithoutEmployeesNestedInput
+    manager?: EmployeeUpdateOneWithoutReportsNestedInput
+    reports?: EmployeeUpdateManyWithoutManagerNestedInput
+    leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
+    reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
+    attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutGivenReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobTitleId?: NullableStringFieldUpdateOperationsInput | string | null
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reports?: EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+    leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+    reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+    attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyManagerInput = {
@@ -11602,6 +13823,32 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PerformanceReviewCreateManyEmployeeInput = {
+    id?: string
+    reviewerId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceReviewCreateManyReviewerInput = {
+    id?: string
+    employeeId: string
+    period: $Enums.ReviewPeriod
+    year: number
+    rating: number
+    strengths?: string | null
+    improvements?: string | null
+    comments: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type EmployeeUpdateWithoutManagerInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
@@ -11615,6 +13862,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutManagerInput = {
@@ -11630,6 +13879,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutManagerInput = {
@@ -11757,6 +14008,84 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PerformanceReviewUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewer?: EmployeeUpdateOneRequiredWithoutGivenReviewsNestedInput
+  }
+
+  export type PerformanceReviewUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reviewerId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceReviewUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reviewerId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceReviewUpdateWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutPerformanceReviewsNestedInput
+  }
+
+  export type PerformanceReviewUncheckedUpdateWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceReviewUncheckedUpdateManyWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    period?: EnumReviewPeriodFieldUpdateOperationsInput | $Enums.ReviewPeriod
+    year?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    strengths?: NullableStringFieldUpdateOperationsInput | string | null
+    improvements?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EmployeeCreateManyDepartmentInput = {
     id?: string
     firstName: string
@@ -11781,6 +14110,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -11796,6 +14127,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -11833,6 +14166,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutJobTitleInput = {
@@ -11848,6 +14183,8 @@ export namespace Prisma {
     leaveRequests?: LeaveRequestUncheckedUpdateManyWithoutEmployeeNestedInput
     reviewedLeaveRequests?: LeaveRequestUncheckedUpdateManyWithoutReviewedByNestedInput
     attendanceRecords?: AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    performanceReviews?: PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+    givenReviews?: PerformanceReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutJobTitleInput = {

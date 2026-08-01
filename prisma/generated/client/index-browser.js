@@ -184,6 +184,20 @@ exports.Prisma.AttendanceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PerformanceReviewScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  reviewerId: 'reviewerId',
+  period: 'period',
+  year: 'year',
+  rating: 'rating',
+  strengths: 'strengths',
+  improvements: 'improvements',
+  comments: 'comments',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -228,13 +242,23 @@ exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   ABSENT: 'ABSENT'
 };
 
+exports.ReviewPeriod = exports.$Enums.ReviewPeriod = {
+  Q1: 'Q1',
+  Q2: 'Q2',
+  Q3: 'Q3',
+  Q4: 'Q4',
+  ANNUAL: 'ANNUAL',
+  PROBATION: 'PROBATION'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Employee: 'Employee',
   Department: 'Department',
   JobTitle: 'JobTitle',
   LeaveRequest: 'LeaveRequest',
-  Attendance: 'Attendance'
+  Attendance: 'Attendance',
+  PerformanceReview: 'PerformanceReview'
 };
 
 /**
