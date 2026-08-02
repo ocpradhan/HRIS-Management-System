@@ -51,7 +51,10 @@ export const getDashboardData = asyncHandler(
       db.attendance.groupBy({
         by: ["status"],
         where: { date: todayStart },
-        _count: { status: true },
+        _count: true,
+        orderBy: {
+          status: "desc",
+        },
       }),
 
       //   6. Company Performance Average
@@ -68,17 +71,20 @@ export const getDashboardData = asyncHandler(
     }));
 
     // B. Calculate Attendance Breakdown
-    let present = 0,
-      late = 0,
-      halfDay = 0;
 
-    attendanceStats.forEach((stat) => {
-      if (stat.status === "PRESENT") present = stat._count.status;
-      if (stat.status === "LATE") late = stat._count.status;
-      if (stat.status === "HALF_DAY") halfDay = stat._count.status;
-    });
+    const getCountByStatus = (statusName: string) => {
+      const stat = attendanceStats.find((s) => s.status === statusName);
+      if (!stat || typeof stat._count === "boolean") return 0;
+      return typeof stat._count === "number"
+        ? stat._count
+        : ((stat._count as Record<string, number>).status ?? 0);
+    };
 
-    const totalClockedIn = present + late + halfDay;
+    const presentCount = getCountByStatus("PRESENT");
+    const lateCount = getCountByStatus("LATE");
+    const halfDayCount = getCountByStatus("HALF_DAY");
+
+    const totalClockedIn = presentCount + lateCount + halfDayCount;
     // Absent count is total employees minus everyone who clocked in AND everyone legally on leave today
     const absent = Math.max(0, totalEmployees - totalClockedIn - onLeaveToday);
 
@@ -99,9 +105,9 @@ export const getDashboardData = asyncHandler(
           onLeaveToday,
         },
         attendanceToday: {
-          present,
-          late,
-          halfDay,
+          present: presentCount,
+          late: lateCount,
+          halfDay: halfDayCount,
           absent,
           totalClockedIn,
         },

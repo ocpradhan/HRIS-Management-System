@@ -1,0 +1,54 @@
+name: Backend Integration Tests & CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  test:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+
+    services:
+      # Spin up PostgreSQL container in GitHub Actions worker
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: frostcrawler
+          POSTGRES_DB: hris_test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd  pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Prisma Migrations
+        env:
+          DATABASE_URL: "postgresql://hris_test_db:frostcrawler@localhost:5432/hris_test_db?schema=public"
+        run: npx prisma migrate dev --name init || npx prisma db push
+
+      - name: Execute Integration Tests
+        env:
+          NODE_ENV: test
+          PORT: 5001
+          DATABASE_URL: "postgresql://postgres:frostcrawler@localhost:5432/hris_test_db?schema=public"
+          JWT_SECRET: test_super_secret_jwt_key_123
+        run: npm test
