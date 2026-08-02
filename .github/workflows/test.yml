@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Prisma Migrations
         env:
-          DATABASE_URL: "postgresql://hris_test_db:frostcrawler@localhost:5432/hris_test_db?schema=public"
+          DATABASE_URL: "postgresql://postgres:frostcrawler@localhost:5432/hris_test_db?schema=public"
         run: npx prisma migrate dev --name init || npx prisma db push
 
       - name: Execute Integration Tests
