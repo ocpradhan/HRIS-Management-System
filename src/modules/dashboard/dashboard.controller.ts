@@ -94,7 +94,7 @@ export const getDashboardData = asyncHandler(
       : 0;
 
     res.status(200).json({
-      message: "Dashboard analytics retreived successfully",
+      message: "Dashboard analytics retrieved successfully",
       analytics: {
         headcount: {
           totalEmployees,
