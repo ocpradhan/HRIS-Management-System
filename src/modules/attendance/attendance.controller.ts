@@ -155,10 +155,14 @@ export const getAttendanceLogs = asyncHandler(
     if (typeof startDate === "string" || typeof endDate === "string") {
       whereClause.date = {};
       if (typeof startDate === "string" && startDate.trim() !== "") {
-        whereClause.date.gte = new Date();
+        const d = new Date(startDate.trim());
+        d.setUTCHours(0, 0, 0, 0);
+        whereClause.date.gte = d;
       }
       if (typeof endDate === "string" && endDate.trim() !== "") {
-        whereClause.date.lte = new Date(endDate.trim());
+        const d = new Date(endDate.trim());
+        d.setUTCHours(23, 59, 59, 999);
+        whereClause.date.lte = d;
       }
     }
 
