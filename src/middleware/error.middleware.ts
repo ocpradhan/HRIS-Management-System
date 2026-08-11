@@ -36,7 +36,7 @@ export const errorHandler = (
   }
 
   // Log error stack trace to console during development
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV === "development") {
     console.error("🔥 [Global Error Handler]:", err);
   }
 
