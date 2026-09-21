@@ -69,14 +69,15 @@ export const requireRoles = (allowedRoles: Role[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     // Ensure the checkAuth middleware ran first and verified the user identity
     if (!req.user) {
-      res.status(401).json({ error: "Authentication required." });
+      res.status(401).json({ message: "Authentication required." });
       return;
     }
 
     // Check if the user's role exists inside the array of allowed execution roles
     if (!allowedRoles.includes(req.user.role)) {
       res.status(403).json({
-        error: "Forbidden. You do not have permission to perform this action.",
+        message:
+          "Forbidden. You do not have permission to perform this action.",
       });
     }
 

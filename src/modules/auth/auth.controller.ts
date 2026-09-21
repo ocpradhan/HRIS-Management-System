@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { db } from "../../config/db.js"; // Notice the required modern local .js extension
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { AppError } from "../../utils/appError.js";
+import { Role } from "../../../prisma/generated/client/index.js";
 
 // A standard rule for cryptography processing speed
 const SALT_ROUNDS = 10;
@@ -23,6 +24,9 @@ export const register = asyncHandler(
       throw new AppError("Missing required account configuration values.", 400);
     }
 
+    if (!Object.values(Role).includes(role)) {
+      throw new AppError("Invalid role", 400);
+    }
     // 2. Look for existing users to avoid database level constraint duplication crashes
     const existingUser = await db.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -41,7 +45,7 @@ export const register = asyncHandler(
       data: {
         email,
         password: hashedPassword,
-        role: role || "Employee",
+        role: role || "EMPLOYEE",
         employee: {
           create: {
             firstName,

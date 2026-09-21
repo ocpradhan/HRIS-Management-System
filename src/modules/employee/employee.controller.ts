@@ -159,6 +159,7 @@ export const updateEmployeeProfile = asyncHandler(
       if (targetEmployee.userId !== callerUserId) {
         throw new AppError(
           "Forbidden. You are only authorized to modify your own profile.",
+          403,
         );
       }
     }
@@ -219,7 +220,10 @@ export const updateEmployeeProfile = asyncHandler(
           where: { id: jobTitleId },
         });
         if (!titleExists)
-          throw new AppError("Invalid jobTitleId. Job title does not exist.");
+          throw new AppError(
+            "Invalid jobTitleId. Job title does not exist.",
+            404,
+          );
       }
       employeeDataToUpdate.jobTitle = { connect: { id: jobTitleId } };
     }
@@ -248,10 +252,7 @@ export const updateEmployeeProfile = asyncHandler(
           where: { id: managerId },
         });
         if (!managerExists)
-          throw new AppError(
-            "Invalid managerId. Manager employee profile not found.",
-            404,
-          );
+          throw new AppError("Invalid managerId. Manager does not exist.", 404);
 
         employeeDataToUpdate.manager = { connect: { id: managerId } };
       }
@@ -262,7 +263,7 @@ export const updateEmployeeProfile = asyncHandler(
     if (role != undefined) {
       if (!isAdmin)
         throw new AppError(
-          "Forbidden. Only HR Admins can alter user roles.",
+          "Forbidden. Only HR Admins can assign user roles.",
           403,
         );
 
