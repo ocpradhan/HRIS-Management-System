@@ -5,12 +5,10 @@ import { db } from "../../config/db.js";
 
 describe("Job Title Controller Integration Tests", () => {
   let employeetoken: string;
+  let managerToken: string;
   let adminToken: string;
+  let superAdminToken: string;
   let existingJobTitle: any;
-  let orphanUserToken: string;
-
-  let testUser: any;
-  let testEmployee: any;
 
   const secret = process.env.JWT_SECRET || "test_super_secret_jwt_key_123";
 
@@ -25,11 +23,26 @@ describe("Job Title Controller Integration Tests", () => {
       { expiresIn: "1h" },
     );
 
+    superAdminToken = jwt.sign(
+      {
+        userId: "mock-super-admin-id",
+        role: "SUPER_ADMIN",
+      },
+      secret,
+      { expiresIn: "1h" },
+    );
+
     employeetoken = jwt.sign(
       {
         userId: "mock-employee-id",
         role: "EMPLOYEE",
       },
+      secret,
+      { expiresIn: "1h" },
+    );
+
+    managerToken = jwt.sign(
+      { userId: "mock-manager-id", role: "MANAGER" },
       secret,
       { expiresIn: "1h" },
     );
@@ -57,43 +70,60 @@ describe("Job Title Controller Integration Tests", () => {
   // ==========================================
   // CONTROLLER 2: createJobTitle
   // ==========================================
-  describe("GET /api/jobtitle", () => {
-    it("should return 403 if an employee tries to add a job title", async () => {
-      const response = await request(app)
-        .post("/api/job-titles")
-        .set("Authorization", `Bearer ${employeetoken}`)
-        .send({ title: "testTitle" });
-    });
+  describe("POST /api/jobtitle", () => {
+    const forbiddenScenarios = [
+      { role: "EMPLOYEE", getToken: () => employeetoken },
+      { role: "MANAGER", getToken: () => managerToken },
+    ] as const;
 
-    it("should return 400 if the Job Title is not sent in the payload", async () => {
-      const response = await request(app)
-        .post("/api/job-titles")
-        .set("Authorization", `Bearer ${adminToken}`)
-        .send({ salaryGrade: "test-salary-grade" });
-
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe(
-        "Job title is mandatory string property.",
-      );
-    });
-
-    const testScenariosCreate = [
-      {
-        testCase:
-          "should return 201 if both job title and salary Grade is sent in the payload",
-        payload: { title: "Test Job Title", salaryGrade: "Test salary grade" },
-      },
-      {
-        testCase: "should return 201 if only job title is sent in the payload",
-        payload: { title: "Test Job Title 2" },
-      },
-    ];
-
-    testScenariosCreate.forEach(({ testCase, payload }) => {
-      it(testCase, async () => {
+    it.each(forbiddenScenarios)(
+      "should return 403 if \$role is trying to create a job title",
+      async ({ role, getToken }) => {
         const response = await request(app)
           .post("/api/job-titles")
-          .set("Authorization", `Bearer ${adminToken}`)
+          .set("Authorization", `Bearer ${getToken()}`)
+          .send({ title: `testTitle by ${role}` });
+
+        expect(response.status).toBe(403);
+        expect(response.body.message).toBe(
+          "Forbidden. You do not have permission to perform this action.",
+        );
+      },
+    );
+
+    const allowedScenarios = [
+      {
+        role: "HR_ADMIN",
+        description: "both title and salary grade are sent",
+        payload: {
+          title: "Test Job Title Full HR",
+          salaryGrade: "Test salary grade",
+        },
+        getToken: () => adminToken,
+      },
+      {
+        role: "SUPER_ADMIN",
+        description: "both title and salary grade are sent",
+        payload: {
+          title: "Test Job Title Full Super",
+          salaryGrade: "Test salary grade",
+        },
+        getToken: () => superAdminToken,
+      },
+      {
+        role: "HR_ADMIN",
+        description: "only the mandatory job title is sent",
+        payload: { title: "Test Job Title Half HR" },
+        getToken: () => adminToken,
+      },
+    ] as const;
+
+    it.each(allowedScenarios)(
+      "should return 201 Created when \$description by a \$role",
+      async ({ payload, getToken }) => {
+        const response = await request(app)
+          .post("/api/job-titles")
+          .set("Authorization", `Bearer ${getToken()}`)
           .send(payload);
 
         expect(response.status).toBe(201);
@@ -106,8 +136,18 @@ describe("Job Title Controller Integration Tests", () => {
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         });
-      });
-    });
+
+        const savedJobTitle = await db.jobTitle.findUnique({
+          where: { title: payload.title },
+        });
+
+        expect(savedJobTitle).not.toBeNull();
+        expect(savedJobTitle?.title).toBe(payload.title);
+        expect(savedJobTitle?.salaryGrade).toBe(
+          "salaryGrade" in payload ? payload.salaryGrade : null,
+        );
+      },
+    );
 
     it("should return 409 if the job title already exists", async () => {
       const response = await request(app)
@@ -125,10 +165,20 @@ describe("Job Title Controller Integration Tests", () => {
     });
   });
 
-  // // ==========================================
-  // // CONTROLLER 3: updateJobTitle
-  // // ==========================================
-  // describe("PATCH /api/jobtitle/:id", () => {});
+  // ==========================================
+  // CONTROLLER 3: updateJobTitle
+  // ==========================================
+  describe("PATCH /api/job-titles/:id", () => {
+    it("should return 404 if the Target Job title record not found", async () => {
+      const nonExistentId = "00000000-0000-0000-0000-000000000000";
+      const response = await request(app)
+        .patch(`/api/job-titles/${nonExistentId}`)
+        .set("Authorization", `Bearer ${adminToken}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Target job title record not found");
+    });
+  });
 
   // // ==========================================
   // // CONTROLLER 4: deleteJobTitle
