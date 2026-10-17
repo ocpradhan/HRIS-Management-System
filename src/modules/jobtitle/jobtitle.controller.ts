@@ -117,7 +117,17 @@ export const deleteJobTitle = asyncHandler(
       throw new AppError("Target job title record not found.", 404);
     }
 
-    await db.jobTitle.delete({ where: { id } });
+    await db.$transaction([
+      db.employee.updateMany({
+        where: { jobTitleId: id },
+        data: { jobTitleId: null },
+      }),
+
+      db.jobTitle.delete({
+        where: { id },
+      }),
+    ]);
+
     res.status(200).json({
       message:
         "Job title successfully purged. Associated employee fields unlinked.",
