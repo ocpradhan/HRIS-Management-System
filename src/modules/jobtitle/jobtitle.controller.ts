@@ -57,7 +57,10 @@ export const getAllJobTitles = asyncHandler(
       },
     });
 
-    res.status(200).json(jobTitles);
+    res.status(200).json({
+      message: "Job Titles retrieved successfully",
+      jobTitles,
+    });
   },
 );
 

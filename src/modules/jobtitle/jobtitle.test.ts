@@ -77,7 +77,52 @@ describe("Job Title Controller Integration Tests", () => {
   // ==========================================
   // CONTROLLER 1: getAllJobTitles
   // ==========================================
-  describe("GET /api/jobtitle", () => {});
+  describe("GET /api/jobtitle", () => {
+    const allowedScenarios = [
+      {
+        role: "HR_ADMIN",
+        getToken: () => adminToken,
+      },
+      {
+        role: "SUPER_ADMIN",
+        getToken: () => superAdminToken,
+      },
+      {
+        role: "HR_ADMIN",
+        getToken: () => adminToken,
+      },
+      {
+        role: "EMPLOYEE",
+        getToken: () => employeetoken,
+      },
+    ] as const;
+
+    it.each(allowedScenarios)(
+      "should return 200 and retrieve all the job titles successfully for \$role.",
+      async ({ getToken }) => {
+        const response = await request(app)
+          .get("/api/job-titles")
+          .set("Authorization", `Bearer ${getToken()}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Job Titles retrieved successfully");
+        expect(response.body.jobTitles).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              title: expect.any(String),
+              salaryGrade: expect.any(String),
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              _count: expect.objectContaining({
+                employees: expect.any(Number),
+              }),
+            }),
+          ]),
+        );
+      },
+    );
+  });
 
   // ==========================================
   // CONTROLLER 2: createJobTitle
