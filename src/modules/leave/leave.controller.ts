@@ -118,7 +118,7 @@ export const reviewLeaveRequest = asyncHandler(
     // Line 12: Security gate - block user if there are neither HR Admin nor direct manager
     if (!isAdmin && !isDirectManager) {
       throw new AppError(
-        "Forbidden. Only HR Admins or the direct manager can approve/reject this leave request/",
+        "Forbidden. Only HR Admins or the direct manager can approve/reject this leave request.",
         403,
       );
     }
