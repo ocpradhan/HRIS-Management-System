@@ -2,6 +2,7 @@ import request from "supertest";
 import jwt from "jsonwebtoken";
 import app from "../../app.js";
 import { db } from "../../config/db.js";
+import { query } from "express";
 
 describe("Leave Controller Integration Tests", () => {
   let testAdmin: any;
@@ -169,6 +170,8 @@ describe("Leave Controller Integration Tests", () => {
         endDate: new Date("2026-11-12"),
         reason: "This is testing Reason",
         status: "APPROVED",
+        reviewNote: "Enjoy Testing",
+        reviewedById: testAdmin?.employee?.id,
       },
     });
 
@@ -180,6 +183,8 @@ describe("Leave Controller Integration Tests", () => {
         endDate: new Date("2026-11-12"),
         reason: "This is testing Reason",
         status: "REJECTED",
+        reviewNote: "Sorry you have to do Testing",
+        reviewedById: testAdmin?.employee?.id,
       },
     });
   });
@@ -504,5 +509,276 @@ describe("Leave Controller Integration Tests", () => {
   // ==========================================
   // CONTROLLER 3: getLeaveRequests
   // ==========================================
-  // describe("GET /api/leave", () => {});
+  describe("GET /api/leave", () => {
+    const allowedUsers = [
+      { role: "HR_ADMIN", getToken: () => nonEmployeeToken },
+      { role: "EMPLOYEE", getToken: () => nonEmployeeToken },
+      { role: "NOT_DIRECT_MANAGER", getToken: () => nonReviewerToken },
+    ] as const;
+
+    it.each(allowedUsers)(
+      "should return 404 Employee profile not found for \$role",
+      async ({ getToken }) => {
+        const response = await request(app)
+          .get("/api/leave")
+          .set("Authorization", `Bearer ${getToken()}`);
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Employee profile not found.");
+      },
+    );
+
+    const testCasesForFilter = [
+      {
+        name: "only a status is provided PENDING",
+        getQuery: () => ({ status: "PENDING" }),
+        validate: (rec: any) => {
+          expect(rec.status).toBe("PENDING");
+          expect(rec.reviewedById).toBeNull();
+          expect(rec.reviewNote).toBeNull();
+          expect(rec.reviewedBy).toBeNull();
+        },
+      },
+      {
+        name: "only a status is provided APPROVED",
+        getQuery: () => ({ status: "APPROVED" }),
+        validate: (rec: any) => {
+          expect(rec.status).toBe("APPROVED");
+          expect(rec.reviewedById).toEqual(expect.any(String));
+          expect(rec.reviewNote).toEqual(expect.any(String));
+          expect(rec.reviewedBy).toMatchObject({
+            id: expect.any(String),
+            firstName: expect.any(String),
+            lastName: expect.any(String),
+          });
+        },
+      },
+      {
+        name: "only leaveType is provided",
+        getQuery: () => ({ leaveType: "SICK" }),
+        validate: (rec: any) => expect(rec.leaveType).toBe("SICK"),
+      },
+      {
+        name: "only employeeId is provided",
+        getQuery: () => ({ employeeId: testEmployee?.employee?.id }),
+        validate: (rec: any) =>
+          expect(rec.employeeId).toBe(testEmployee?.employee?.id),
+      },
+    ] as const;
+
+    it.each(testCasesForFilter)(
+      "should return 200 and filter records correctly when \$name",
+      async ({ getQuery, validate }) => {
+        const response = await request(app)
+          .get("/api/leave")
+          .query(getQuery())
+          .set("Authorization", `Bearer ${testAdminToken}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe(
+          "Leave Requests retrieved successfully",
+        );
+
+        expect(response.body.meta).toMatchObject({
+          totalItems: expect.any(Number),
+          totalPages: expect.any(Number),
+          currentPage: expect.any(Number),
+          itemsPerPage: expect.any(Number),
+          hasNextPage: expect.any(Boolean),
+          hasPrevPage: expect.any(Boolean),
+        });
+
+        expect(response.body.leaveRequests).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              employeeId: expect.any(String),
+              leaveType: expect.any(String),
+              startDate: expect.any(String),
+              endDate: expect.any(String),
+              reason: expect.any(String),
+              status: expect.any(String),
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              employee: expect.objectContaining({
+                id: expect.any(String),
+                firstName: expect.any(String),
+                lastName: expect.any(String),
+              }),
+            }),
+          ]),
+        );
+
+        response.body.leaveRequests.forEach((rec: any) => validate(rec));
+      },
+    );
+
+    const queryScenarios = [
+      {
+        name: "status is Pending, leaveType and employeeId",
+        getQuery: () => ({
+          status: "PENDING",
+          leaveType: "SICK",
+          employeeId: testEmployee?.employee?.id,
+        }),
+      },
+      {
+        name: "status is Approved, leaveType and employeeId",
+        getQuery: () => ({
+          status: "APPROVED",
+          leaveType: "SICK",
+          employeeId: testEmployee?.employee?.id,
+        }),
+      },
+      {
+        name: "status is Rejected, leaveType and employeeId",
+        getQuery: () => ({
+          status: "REJECTED",
+          leaveType: "SICK",
+          employeeId: testEmployee?.employee?.id,
+        }),
+      },
+    ] as const;
+
+    it.each(queryScenarios)(
+      "should return 200 and filter leave requests by \$name",
+      async ({ getQuery }) => {
+        const query = getQuery();
+
+        const response = await request(app)
+          .get("/api/leave")
+          .query(query)
+          .set("Authorization", `Bearer ${testAdminToken}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe(
+          "Leave Requests retrieved successfully",
+        );
+
+        expect(response.body.meta).toMatchObject({
+          totalItems: expect.any(Number),
+          totalPages: expect.any(Number),
+          currentPage: expect.any(Number),
+          itemsPerPage: expect.any(Number),
+          hasNextPage: expect.any(Boolean),
+          hasPrevPage: expect.any(Boolean),
+        });
+
+        expect(response.body.leaveRequests).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              employeeId: query?.employeeId,
+              leaveType: query?.leaveType,
+              startDate: expect.any(String),
+              endDate: expect.any(String),
+              reason: expect.any(String),
+              status: query?.status,
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              employee: expect.objectContaining({
+                id: query?.employeeId,
+                firstName: testEmployee?.employee?.firstName,
+                lastName: testEmployee?.employee?.lastName,
+              }),
+            }),
+          ]),
+        );
+      },
+    );
+
+    it("should return 200 and retrieve leave requests if there are no query params", async () => {
+      const response = await request(app)
+        .get("/api/leave")
+        .set("Authorization", `Bearer ${testAdminToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(
+        "Leave Requests retrieved successfully",
+      );
+
+      expect(response.body.meta).toMatchObject({
+        totalItems: expect.any(Number),
+        totalPages: expect.any(Number),
+        currentPage: expect.any(Number),
+        itemsPerPage: expect.any(Number),
+        hasNextPage: expect.any(Boolean),
+        hasPrevPage: expect.any(Boolean),
+      });
+
+      expect(response.body.leaveRequests).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            employeeId: expect.any(String),
+            leaveType: expect.any(String),
+            startDate: expect.any(String),
+            endDate: expect.any(String),
+            reason: expect.any(String),
+            status: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+            employee: expect.objectContaining({
+              id: expect.any(String),
+              firstName: expect.any(String),
+              lastName: expect.any(String),
+            }),
+          }),
+        ]),
+      );
+    });
+
+    const paginationScenarios = [
+      { page: 1, limit: 1, hasPrev: false, hasNext: true, name: "first page" },
+      { page: 2, limit: 1, hasPrev: true, hasNext: true, name: "middle page" },
+      { page: 3, limit: 1, hasPrev: true, hasNext: false, name: "last page" },
+    ];
+
+    it.each(paginationScenarios)(
+      "should return 200 and handle pagination flags correctly on the \$name",
+      async ({ page, limit, hasPrev, hasNext }) => {
+        const response = await request(app)
+          .get("/api/leave")
+          .query({ page, limit })
+          .set("Authorization", `Bearer ${testAdminToken}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe(
+          "Leave Requests retrieved successfully",
+        );
+
+        expect(response.body.meta).toMatchObject({
+          totalItems: 3,
+          totalPages: 3,
+          currentPage: page,
+          itemsPerPage: limit,
+          hasPrevPage: hasPrev,
+          hasNextPage: hasNext,
+        });
+
+        expect(response.body.leaveRequests.length).toBe(1);
+
+        expect(response.body.leaveRequests).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              employeeId: expect.any(String),
+              leaveType: expect.any(String),
+              startDate: expect.any(String),
+              endDate: expect.any(String),
+              reason: expect.any(String),
+              status: expect.any(String),
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              employee: expect.objectContaining({
+                id: expect.any(String),
+                firstName: expect.any(String),
+                lastName: expect.any(String),
+              }),
+            }),
+          ]),
+        );
+      },
+    );
+  });
 });
