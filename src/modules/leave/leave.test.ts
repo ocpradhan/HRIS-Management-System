@@ -2,7 +2,6 @@ import request from "supertest";
 import jwt from "jsonwebtoken";
 import app from "../../app.js";
 import { db } from "../../config/db.js";
-import { query } from "express";
 
 describe("Leave Controller Integration Tests", () => {
   let testAdmin: any;

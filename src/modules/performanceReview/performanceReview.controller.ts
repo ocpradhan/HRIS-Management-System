@@ -45,7 +45,7 @@ export const createReview = asyncHandler(
       throw new AppError("Improvements must be a string", 400);
 
     if (typeof comments !== "string")
-      throw new AppError("Comments must be a string");
+      throw new AppError("Comments must be a string", 400);
 
     const userId = req.user?.userId;
     const userRole = req.user?.role;
@@ -63,7 +63,7 @@ export const createReview = asyncHandler(
     const isDirectManager = targetEmployee.managerId === reviwer.id;
     const isAdmin = userRole === "HR_ADMIN";
 
-    if (!isAdmin && isDirectManager) {
+    if (!isAdmin && !isDirectManager) {
       throw new AppError(
         "Forbidden. Only HR Admins or the direct manager can submit reviews.",
         403,
