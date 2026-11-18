@@ -51,8 +51,8 @@ export const createReview = asyncHandler(
     const userRole = req.user?.role;
     if (!userId) throw new AppError("Unauthorized context.", 401);
 
-    const reviwer = await db.employee.findUnique({ where: { userId } });
-    if (!reviwer) throw new AppError("Reviwer profile not found", 404);
+    const reviewer = await db.employee.findUnique({ where: { userId } });
+    if (!reviewer) throw new AppError("Reviewer profile not found", 404);
 
     const targetEmployee = await db.employee.findUnique({
       where: { id: employeeId },
@@ -60,7 +60,7 @@ export const createReview = asyncHandler(
     if (!targetEmployee)
       throw new AppError("Target Employee doesn't exist", 404);
 
-    const isDirectManager = targetEmployee.managerId === reviwer.id;
+    const isDirectManager = targetEmployee.managerId === reviewer.id;
     const isAdmin = userRole === "HR_ADMIN";
 
     if (!isAdmin && !isDirectManager) {
@@ -70,7 +70,7 @@ export const createReview = asyncHandler(
       );
     }
 
-    if (targetEmployee.id === reviwer.id) {
+    if (targetEmployee.id === reviewer.id) {
       throw new AppError(
         "You cannot submit a performance review for yourself.",
         400,
@@ -98,7 +98,7 @@ export const createReview = asyncHandler(
         strengths,
         improvements,
         comments,
-        reviewerId: reviwer.id,
+        reviewerId: reviewer.id,
         employeeId: targetEmployee.id,
       },
     });
