@@ -3,11 +3,12 @@ import jwt from "jsonwebtoken";
 import app from "../../app.js";
 import { db } from "../../config/db.js";
 
-describe("Leave Controller Integration Tests", () => {
+describe("Performance Review Controller Integration Tests", () => {
   let testDBAdmin: any;
   let testDBDirectManager: any;
   let testDBNotDirectManager: any;
   let testDBEmployee: any;
+  let testDBEmployeeReview: any;
   let testDBReviewingEmployee: any;
 
   let testAdminToken: string;
@@ -153,6 +154,26 @@ describe("Leave Controller Integration Tests", () => {
       secret,
       { expiresIn: "1h" },
     );
+
+    testDBEmployeeReview = await db.user.create({
+      data: {
+        email: "testDBEmployeeReview@test.com",
+        password: "testDBEmployeeReview",
+        role: "EMPLOYEE",
+        employee: {
+          create: {
+            firstName: "TestDB Review",
+            lastName: "Employee",
+            manager: {
+              connect: { id: testDBDirectManager?.employee?.id },
+            },
+          },
+        },
+      },
+      include: {
+        employee: true,
+      },
+    });
 
     existingReview = await db.performanceReview.create({
       data: {
@@ -433,6 +454,67 @@ describe("Leave Controller Integration Tests", () => {
         );
       },
     );
+
+    describe("Authorized role creation scenarios", () => {
+      beforeEach(async () => {
+        await db.performanceReview.deleteMany({
+          where: { employeeId: testDBEmployeeReview?.employee?.id },
+        });
+      });
+
+      const successfulReviewScenarios = [
+        {
+          role: "HR_ADMIN",
+          getToken: () => testDBAdminToken,
+          getReviwerId: () => testDBAdmin?.employee?.id,
+        },
+        {
+          role: "DIRECT MANAGER",
+          getToken: () => testDBDirectManagerToken,
+          getReviwerId: () => testDBDirectManager?.employee?.id,
+        },
+      ] as const;
+
+      it.each(successfulReviewScenarios)(
+        "should return 201 if performance review created successfully by \$role",
+        async ({ getToken, getReviwerId }) => {
+          const { id: employeeId } = testDBEmployeeReview?.employee;
+          const { period, year, rating, strengths, improvements, comments } =
+            validBasePayload;
+
+          const response = await request(app)
+            .post("/api/performance")
+            .set("Authorization", `Bearer ${getToken()}`)
+            .send({
+              ...validBasePayload,
+              employeeId,
+            });
+
+          expect(response.status).toBe(201);
+          expect(response.body.message).toBe(
+            "Performance Review created successfully",
+          );
+
+          const savedPerformanceReview = await db.performanceReview.findFirst({
+            where: { employeeId },
+          });
+
+          expect(savedPerformanceReview).toMatchObject({
+            id: expect.any(String),
+            employeeId,
+            reviewerId: getReviwerId(),
+            period,
+            year,
+            rating,
+            strengths,
+            improvements,
+            comments,
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date),
+          });
+        },
+      );
+    });
   });
 
   // ==========================================
